@@ -12,15 +12,17 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
 
-    "noImplicitThis": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
     "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "strictBindCallApply": false,
     "strictFunctionTypes": true,
-    "strictPropertyInitialization": true
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
   }
 }
