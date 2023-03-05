@@ -5,15 +5,16 @@ import {
   IsBoolean,
   IsDate,
   IsInt,
+  IsObject,
   IsString,
   Length,
   Min,
 } from 'class-validator';
 import { ObjectId } from 'mongodb';
+import { ItemColor } from '../constants/product.constants';
+import { ProductItem } from './product.item';
 
 export type ProductDocument = HydratedDocument<Product>;
-
-export type Item = { _id: ObjectId } & { [index: string]: string[] };
 
 @Schema()
 export class Product {
@@ -22,27 +23,35 @@ export class Product {
   @Length(2, 400)
   title = '';
 
-  @Prop({ type: Array })
-  @IsArray()
-  categories: string[] = [];
+  @Prop({ type: String })
+  @IsString()
+  description = '';
 
   @Prop({ type: Array })
   @IsArray()
-  items: Item[] = [];
+  categories: ObjectId[] = [];
+
+  @Prop({ type: Array })
+  @IsArray()
+  items: ProductItem[] = [];
 
   @Prop({ type: Number })
   @IsInt()
   @Min(0)
-  quantity = 0;
+  quantity!: number;
 
   @Prop({ type: Number })
   @IsInt()
   @Min(0)
-  price = 0;
+  price!: number;
 
   @Prop({ type: Boolean })
   @IsBoolean()
   active = false;
+
+  @Prop({ type: Object })
+  @IsObject()
+  imagesByColor: { [value in ItemColor]?: string[] } = {};
 
   @Prop({ type: Date })
   @IsDate()
@@ -50,3 +59,13 @@ export class Product {
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
+
+ProductSchema.pre('save', function (next) {
+  if (this.quantity !== this.items.length) {
+    console.log(
+      `Quantity changed from ${this.quantity} to ${this.items.length}`,
+    );
+    this.quantity = this.items.length;
+  }
+  next();
+});

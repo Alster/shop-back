@@ -20,7 +20,6 @@ export class ProductService {
     const product = await this.productModel.create({
       title: createProductRequestDto.name,
       price: createProductRequestDto.price,
-      quantity: 10,
       items: [],
       categories: [],
     });
