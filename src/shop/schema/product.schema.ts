@@ -1,6 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { IsArray, IsBoolean, IsDate, IsInt, IsString, Length, Min } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsDate,
+  IsInt,
+  IsString,
+  Length,
+  Min,
+} from 'class-validator';
 import { ObjectId } from 'mongodb';
 
 export type ProductDocument = HydratedDocument<Product>;
