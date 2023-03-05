@@ -1,9 +1,4 @@
 import { validate } from 'class-validator';
-import {
-  EntitySubscriberInterface,
-  EventSubscriber,
-  InsertEvent,
-} from 'typeorm';
 
 export async function validateAndThrow(target: any) {
   const errors = await validate(target);
@@ -15,12 +10,5 @@ export async function validateAndThrow(target: any) {
         .map((e) => Object.values(e.constraints as any).join(', '))
         .join(', ')}`,
     );
-  }
-}
-
-@EventSubscriber()
-export class GlobalEntitySubscriber implements EntitySubscriberInterface<any> {
-  async beforeInsert(event: InsertEvent<any>) {
-    await validateAndThrow(event.entity);
   }
 }

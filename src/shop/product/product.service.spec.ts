@@ -1,14 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductService } from './product.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { ProductEntity } from '../entities/product.entity';
-import { Repository } from 'typeorm';
+import {
+  Product,
+  ProductDocument,
+  ProductSchema,
+} from '../schema/product.schema';
 import { AppModule } from '../../app.module';
 import { ConsoleLogger } from '@nestjs/common';
+import mongoose, { Model } from 'mongoose';
+import { getModelToken } from '@nestjs/mongoose';
 
 describe('ProductService', () => {
   let service: ProductService;
-  let repository: Repository<ProductEntity>;
+  let repository: Model<ProductDocument>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -16,7 +20,7 @@ describe('ProductService', () => {
       // providers: [
       //   ProductService,
       //   {
-      //     provide: getRepositoryToken(ProductEntity),
+      //     provide: getRepositoryToken(ProductSchema),
       //     useValue: {},
       //   },
       // ],
@@ -25,7 +29,11 @@ describe('ProductService', () => {
       .compile();
 
     service = module.get<ProductService>(ProductService);
-    repository = module.get<Repository<ProductEntity>>(ProductService);
+    repository = module.get(getModelToken(Product.name));
+  });
+
+  afterAll(async () => {
+    await mongoose.disconnect();
   });
 
   it('should be defined', () => {
@@ -39,6 +47,12 @@ describe('ProductService', () => {
     });
 
     expect(result).toBeDefined();
+
+    const foundProduct = await repository.findOne({
+      _id: result._id,
+    });
     expect(result.title).toEqual('Test');
+    if (!foundProduct) throw new Error('Product not found');
+    expect(foundProduct.title).toEqual('Test');
   });
 });

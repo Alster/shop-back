@@ -6,10 +6,13 @@ import {
   IsString,
   IsUrl,
 } from 'class-validator';
+import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 
 export class MongoConfig {
   @IsUrl()
   readonly url!: string;
+
+  readonly options!: MongooseModuleOptions;
 }
 
 export class EnvironmentVariables {

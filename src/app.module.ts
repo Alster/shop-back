@@ -2,26 +2,25 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ShopModule } from './shop/shop.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
 import { Config } from './config/config';
-import { GlobalEntitySubscriber } from './helpers/validateAndThrow';
+import { validateAndThrow } from './helpers/validateAndThrow';
+import mongoose from 'mongoose';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      autoLoadEntities: true,
-      url: Config.get().mongo.url,
-      database: 'test',
-      type: 'mongodb',
-      logging: true,
-      subscribers: [GlobalEntitySubscriber],
-    }),
+    MongooseModule.forRoot(Config.get().mongo.url, Config.get().mongo.options),
     ShopModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
-  constructor(private dataSource: DataSource) {}
+  constructor() {
+    mongoose.plugin((schema, options) => {
+      schema.post('save', async (doc) => {
+        await validateAndThrow(doc);
+      });
+    });
+  }
 }
