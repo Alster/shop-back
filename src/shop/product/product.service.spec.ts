@@ -1,10 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductService } from './product.service';
-import {
-  Product,
-  ProductDocument,
-  ProductSchema,
-} from '../schema/product.schema';
+import { Product, ProductDocument } from '../schema/product.schema';
 import { AppModule } from '../../app.module';
 import { ConsoleLogger } from '@nestjs/common';
 import mongoose, { Model } from 'mongoose';

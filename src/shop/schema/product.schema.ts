@@ -1,18 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import {
-  IsArray,
-  IsBoolean,
-  IsDate,
-  IsEnum,
-  IsInt,
-  IsNotEmpty,
-  IsString,
-  Length,
-  Min,
-  ValidateNested,
-} from 'class-validator';
-import { ItemSize } from '../constants/item.constants';
+import { IsArray, IsBoolean, IsDate, IsInt, IsString, Length, Min } from 'class-validator';
 import { ObjectId } from 'mongodb';
 
 export type ProductDocument = HydratedDocument<Product>;

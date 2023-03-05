@@ -1,11 +1,4 @@
-import {
-  IsBooleanString,
-  IsEnum,
-  IsNumber,
-  IsPort,
-  IsString,
-  IsUrl,
-} from 'class-validator';
+import { IsPort, IsUrl } from 'class-validator';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 
 export class MongoConfig {
