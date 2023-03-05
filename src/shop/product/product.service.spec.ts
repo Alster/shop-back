@@ -4,6 +4,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { ProductEntity } from '../entities/product.entity';
 import { Repository } from 'typeorm';
 import { AppModule } from '../../app.module';
+import { ConsoleLogger } from '@nestjs/common';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -19,7 +20,9 @@ describe('ProductService', () => {
       //     useValue: {},
       //   },
       // ],
-    }).compile();
+    })
+      .setLogger(new ConsoleLogger())
+      .compile();
 
     service = module.get<ProductService>(ProductService);
     repository = module.get<Repository<ProductEntity>>(ProductService);
@@ -36,6 +39,6 @@ describe('ProductService', () => {
     });
 
     expect(result).toBeDefined();
-    expect(result.name).toEqual('Test');
+    expect(result.title).toEqual('Test');
   });
 });

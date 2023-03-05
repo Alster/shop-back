@@ -15,6 +15,12 @@ import { ItemSize } from '../constants/item.constants';
 
 export type Item = { _id: ObjectID } & { [index: string]: string[] };
 
+// export class Category {
+//   @IsString()
+//   @IsNotEmpty()
+//   name!: string;
+// }
+
 @Entity()
 export class ProductEntity extends BaseEntity {
   @ObjectIdColumn()
