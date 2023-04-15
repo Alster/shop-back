@@ -11,8 +11,7 @@ import {
   Length,
   Min,
 } from 'class-validator';
-import { ObjectId } from 'mongodb';
-import { AttributeType } from '../constants/product.constants';
+import { AttributeType } from '../../constants/product';
 
 export type ItemAttributeDocument = HydratedDocument<ItemAttribute>;
 

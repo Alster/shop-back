@@ -9,9 +9,9 @@ import {
   ItemAttribute,
   ItemAttributeDocument,
 } from '../schema/item-attribute.schema';
-import { AttributeType } from '../constants/product.constants';
 import { ObjectId } from 'mongodb';
 import { MockColor, MockSize } from './mocks';
+import { AttributeType } from '../../constants/product';
 
 describe('ProductService', () => {
   let service: ProductService;

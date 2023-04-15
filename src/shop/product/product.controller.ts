@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Logger,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import { ProductListResponseDto } from '@shop/shared/dto/product-list.response.dto';
 import { ProductDto } from '@shop/shared/dto/product.dto';
 import { CreateProductRequestDto } from '../dto/create-product.request.dto';
@@ -63,7 +56,7 @@ export class ProductController {
     return await this.productService.find({});
   }
 
-  @Get('attributes')
+  @Get('attribute/list')
   async getAttributes(): Promise<AttributeDto[]> {
     const res = await this.productService.getAttributes();
     return res.map(mapAttributeDocumentToAttributeDTO);

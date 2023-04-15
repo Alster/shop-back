@@ -37,7 +37,18 @@ export class ProductService {
     id: string,
     updateData: ProductDto,
   ): Promise<ProductDocument | null> {
-    return await this.productModel.findByIdAndUpdate(id, updateData).exec();
+    const product = await this.productModel.findById(id).exec();
+    if (!product) {
+      return null;
+    }
+    product.title = updateData.title;
+    product.description = updateData.description;
+    // product.categories = updateData.categories;
+    product.items = updateData.items;
+    product.price = updateData.price;
+    product.active = updateData.active;
+    await product.save();
+    return product;
   }
 
   public async getProduct(id: string): Promise<ProductDocument | null> {

@@ -3,7 +3,6 @@ import {
   ItemAttributeDocument,
   ItemAttributeSchema,
 } from '../schema/item-attribute.schema';
-import { AttributeType } from '../constants/product.constants';
 
 export enum MockColor {
   WHITE = 'white',

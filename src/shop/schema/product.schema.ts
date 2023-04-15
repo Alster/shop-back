@@ -67,26 +67,26 @@ export class Product {
 export const ProductSchema = SchemaFactory.createForClass(Product);
 
 ProductSchema.pre('save', function (next) {
-  if (this.quantity !== this.items.length) {
-    this.quantity = this.items.length;
+  this.quantity = this.items.length;
 
-    const aggregatedAttrs = this.items
-      .flatMap((i) => Object.entries(i.attributes))
-      .reduce<{ [index: string]: Set<string> }>((acc, [key, values]) => {
-        if (!acc[key]) {
-          acc[key] = new Set();
-        }
-        values.forEach((v) => acc[key].add(v));
-        return acc;
-      }, {});
+  const aggregatedAttrs = this.items
+    .flatMap((i) => Object.entries(i.attributes))
+    .reduce<{ [index: string]: Set<string> }>((acc, [key, values]) => {
+      if (!acc[key]) {
+        acc[key] = new Set();
+      }
+      values.forEach((v) => acc[key].add(v));
+      return acc;
+    }, {});
 
-    this.attrs = Object.entries(aggregatedAttrs).reduce<ProductAttributesDto>(
-      (acc, [key, values]: [string, Set<string>]) => ({
-        ...acc,
-        [key]: [...values.values()],
-      }),
-      {},
-    );
-  }
+  this.attrs = Object.entries(aggregatedAttrs).reduce<ProductAttributesDto>(
+    (acc, [key, values]: [string, Set<string>]) => ({
+      ...acc,
+      [key]: [...values.values()],
+    }),
+    {},
+  );
+  console.log(aggregatedAttrs);
+  console.log(this.attrs);
   next();
 });
