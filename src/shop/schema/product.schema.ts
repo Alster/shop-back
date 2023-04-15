@@ -67,7 +67,8 @@ export class Product {
 export const ProductSchema = SchemaFactory.createForClass(Product);
 
 ProductSchema.pre('save', function (next) {
-  this.quantity = this.items.length;
+  // Sum items quantity
+  this.quantity = this.items.reduce((acc, i) => acc + i.quantity, 0);
 
   const aggregatedAttrs = this.items
     .flatMap((i) => Object.entries(i.attributes))
