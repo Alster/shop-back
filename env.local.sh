@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-MONGO_SINGLE_REPLICA="mongodb_test_single_replica"
+MONGO_SINGLE_REPLICA="mongodb_local_single_replica"
 
 CLEAN="clean"
 RUN="run"
@@ -58,8 +58,8 @@ run() {
   clean
 
   echo "Running docker..."
-  docker-compose -f docker-compose.test.yaml up --build -d
-  run_mongo $MONGO_SINGLE_REPLICA 27027
+  docker-compose -f docker-compose.local.yaml up --build -d
+  run_mongo $MONGO_SINGLE_REPLICA 27037
 }
 
 run_daemon() {
@@ -67,12 +67,12 @@ run_daemon() {
   clean
 
   echo "Running docker..."
-  docker-compose -f docker-compose.test.yaml up --build --detach
+  docker-compose -f docker-compose.local.yaml up --build --detach
   echo "Started as daemon"
 }
 
 stop_existing() {
-  docker-compose -f docker-compose.test.yaml down --remove-orphans
+  docker-compose -f docker-compose.local.yaml down --remove-orphans
 }
 
 remove_stopped_containers() {

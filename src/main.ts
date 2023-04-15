@@ -11,6 +11,9 @@ async function bootstrap() {
       enableDebugMessages: true,
     }),
   );
+  if (Config.env === 'local') {
+    app.enableCors();
+  }
   await app.listen(Config.get().port);
 }
 bootstrap();

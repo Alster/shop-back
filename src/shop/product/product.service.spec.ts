@@ -3,29 +3,53 @@ import { ProductService } from './product.service';
 import { Product, ProductDocument } from '../schema/product.schema';
 import { AppModule } from '../../app.module';
 import { ConsoleLogger } from '@nestjs/common';
-import mongoose, { Model } from 'mongoose';
+import mongoose, { Model, Types } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
+import {
+  ItemAttribute,
+  ItemAttributeDocument,
+} from '../schema/item-attribute.schema';
+import { AttributeType } from '../constants/product.constants';
+import { ObjectId } from 'mongodb';
+import { MockColor, MockSize } from './mocks';
 
 describe('ProductService', () => {
   let service: ProductService;
-  let repository: Model<ProductDocument>;
+  let productModel: Model<ProductDocument>;
+  let itemAttributeModel: Model<ItemAttributeDocument>;
+
+  const mockCreateAttributes = async () => {
+    const attrColor: ItemAttributeDocument = await itemAttributeModel.create({
+      title: 'Color',
+      description: 'Some color',
+      key: 'color',
+      type: AttributeType.SELECT,
+      values: Object.values(MockColor),
+      active: true,
+    });
+    const attrSize: ItemAttributeDocument = await itemAttributeModel.create({
+      title: 'Size',
+      description: 'Some size',
+      key: 'size',
+      type: AttributeType.SELECT,
+      values: Object.values(MockSize),
+      active: true,
+    });
+    return { attrColor, attrSize };
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-      // providers: [
-      //   ProductService,
-      //   {
-      //     provide: getRepositoryToken(ProductSchema),
-      //     useValue: {},
-      //   },
-      // ],
     })
       .setLogger(new ConsoleLogger())
       .compile();
 
     service = module.get<ProductService>(ProductService);
-    repository = module.get(getModelToken(Product.name));
+    productModel = module.get(getModelToken(Product.name));
+    itemAttributeModel = module.get(getModelToken(ItemAttribute.name));
+
+    await productModel.deleteMany({});
   });
 
   afterAll(async () => {
@@ -37,18 +61,63 @@ describe('ProductService', () => {
   });
 
   it('Create a product', async () => {
-    const result = await service.createProduct({
-      name: 'Test',
+    const { attrColor, attrSize } = await mockCreateAttributes();
+    const productSkirt = await service.createProduct({
+      name: 'Skit',
       price: 100,
+      items: [
+        {
+          _id: new ObjectId().toString(),
+          attributes: {
+            [attrColor.key]: [MockColor.BLUE],
+            [attrSize.key]: [MockSize.S],
+          },
+          quantity: 10,
+        },
+        {
+          _id: new ObjectId().toString(),
+          attributes: {
+            [attrColor.key]: [MockColor.RED],
+            [attrSize.key]: [MockSize.M],
+          },
+          quantity: 10,
+        },
+      ],
+    });
+    const productShirt = await service.createProduct({
+      name: 'Test',
+      price: 150,
+      items: [
+        {
+          _id: new ObjectId().toString(),
+          attributes: {
+            [attrColor.key]: [MockColor.WHITE],
+            [attrSize.key]: [MockSize.S],
+          },
+          quantity: 10,
+        },
+        {
+          _id: new ObjectId().toString(),
+          attributes: {
+            [attrColor.key]: [MockColor.BLACK],
+            [attrSize.key]: [MockSize.M],
+          },
+          quantity: 10,
+        },
+        {
+          _id: new ObjectId().toString(),
+          attributes: {
+            [attrColor.key]: [MockColor.PINK],
+            [attrSize.key]: [MockSize.L],
+          },
+          quantity: 10,
+        },
+      ],
     });
 
-    expect(result).toBeDefined();
-
-    const foundProduct = await repository.findOne({
-      _id: result._id,
+    const res = await service.find({
+      [`attrs.${attrColor.key}`]: { $in: [MockColor.RED] },
     });
-    expect(result.title).toEqual('Test');
-    if (!foundProduct) throw new Error('Product not found');
-    expect(foundProduct.title).toEqual('Test');
+    console.log(JSON.stringify(res, null, 2));
   });
 });

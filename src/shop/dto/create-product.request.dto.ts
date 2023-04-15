@@ -1,4 +1,5 @@
-import { IsInt, IsString, Length, Min } from 'class-validator';
+import { ProductItemDto } from '@shop/shared/dto/product.dto';
+import { IsArray, IsInt, IsString, Length, Min } from 'class-validator';
 
 export class CreateProductRequestDto {
   @IsString()
@@ -8,4 +9,7 @@ export class CreateProductRequestDto {
   @IsInt()
   @Min(0)
   price!: number;
+
+  @IsArray()
+  items: ProductItemDto[] = [];
 }

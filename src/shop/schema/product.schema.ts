@@ -11,61 +11,82 @@ import {
   Min,
 } from 'class-validator';
 import { ObjectId } from 'mongodb';
-import { ItemColor } from '../constants/product.constants';
-import { ProductItem } from './product.item';
+import {
+  ProductAttributesDto,
+  ProductItemDto,
+} from '@shop/shared/dto/product.dto';
 
 export type ProductDocument = HydratedDocument<Product>;
 
 @Schema()
 export class Product {
-  @Prop({ type: String })
+  @Prop({ type: String, default: '' })
   @IsString()
   @Length(2, 400)
-  title = '';
+  title!: string;
 
-  @Prop({ type: String })
+  @Prop({ type: String, default: '' })
   @IsString()
-  description = '';
+  description!: string;
 
-  @Prop({ type: Array })
+  @Prop({ type: Array, default: [] })
   @IsArray()
-  categories: ObjectId[] = [];
+  categories!: ObjectId[];
 
-  @Prop({ type: Array })
+  @Prop({ type: Array, default: [] })
   @IsArray()
-  items: ProductItem[] = [];
+  items!: ProductItemDto[];
 
-  @Prop({ type: Number })
+  @Prop({ type: Object, default: {} })
+  @IsObject()
+  attrs!: ProductAttributesDto;
+
+  @Prop({ type: Number, default: 0 })
   @IsInt()
   @Min(0)
   quantity!: number;
 
-  @Prop({ type: Number })
+  @Prop({ type: Number, default: 0 })
   @IsInt()
   @Min(0)
   price!: number;
 
-  @Prop({ type: Boolean })
+  @Prop({ type: Boolean, default: false })
   @IsBoolean()
-  active = false;
+  active!: boolean;
 
-  @Prop({ type: Object })
-  @IsObject()
-  imagesByColor: { [value in ItemColor]?: string[] } = {};
+  // @Prop({ type: Object })
+  // @IsObject()
+  // imagesByColor: { [value in ItemColor]?: string[] } = {};
 
-  @Prop({ type: Date })
+  @Prop({ type: Date, default: new Date() })
   @IsDate()
-  createDate: Date = new Date();
+  createDate!: Date;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
 
 ProductSchema.pre('save', function (next) {
   if (this.quantity !== this.items.length) {
-    console.log(
-      `Quantity changed from ${this.quantity} to ${this.items.length}`,
-    );
     this.quantity = this.items.length;
+
+    const aggregatedAttrs = this.items
+      .flatMap((i) => Object.entries(i.attributes))
+      .reduce<{ [index: string]: Set<string> }>((acc, [key, values]) => {
+        if (!acc[key]) {
+          acc[key] = new Set();
+        }
+        values.forEach((v) => acc[key].add(v));
+        return acc;
+      }, {});
+
+    this.attrs = Object.entries(aggregatedAttrs).reduce<ProductAttributesDto>(
+      (acc, [key, values]: [string, Set<string>]) => ({
+        ...acc,
+        [key]: [...values.values()],
+      }),
+      {},
+    );
   }
   next();
 });

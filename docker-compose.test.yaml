@@ -1,14 +1,14 @@
 version: "3"
 
 services:
-  mongodb_single_replica:
+  mongodb_test_single_replica:
     image: mongo:5.0.4
-    container_name: mongodb_single_replica
+    container_name: mongodb_test_single_replica
     ports:
       - "27027:27027"
     restart: always
     environment:
-      - MONGODB_DATABASE="test"
+      - MONGODB_DATABASE="unicorn"
     volumes:
-      - ./docker/volume/mongodb:/data/db
+      - ./docker/volume/mongodb_test:/data/db
     entrypoint: [ "/usr/bin/mongod", "--port", "27027", "--bind_ip_all", "--replSet", "rs0" ]
