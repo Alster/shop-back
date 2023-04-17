@@ -33,6 +33,10 @@ export class Product {
   @IsArray()
   categories!: ObjectId[];
 
+  @Prop({ type: Object, default: {} })
+  @IsObject()
+  characteristics!: ProductAttributesDto;
+
   @Prop({ type: Array, default: [] })
   @IsArray()
   items!: ProductItemDto[];
@@ -78,15 +82,20 @@ export const ProductSchema = SchemaFactory.createForClass(Product);
 ProductSchema.pre('save', function (next) {
   this.quantity = this.items.length;
 
-  const aggregatedAttrs = this.items
-    .flatMap((i) => Object.entries(i.attributes))
-    .reduce<{ [index: string]: Set<string> }>((acc, [key, values]) => {
-      if (!acc[key]) {
-        acc[key] = new Set();
-      }
-      values.forEach((v) => acc[key].add(v));
-      return acc;
-    }, {});
+  const collectedAttrs = [
+    ...this.items.flatMap((i) => Object.entries(i.attributes)),
+    ...Object.entries(this.characteristics),
+  ];
+
+  const aggregatedAttrs = collectedAttrs.reduce<{
+    [index: string]: Set<string>;
+  }>((acc, [key, values]) => {
+    if (!acc[key]) {
+      acc[key] = new Set();
+    }
+    values.forEach((v) => acc[key].add(v));
+    return acc;
+  }, {});
 
   this.attrs = Object.entries(aggregatedAttrs).reduce<ProductAttributesDto>(
     (acc, [key, values]: [string, Set<string>]) => ({

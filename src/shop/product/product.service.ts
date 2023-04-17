@@ -45,6 +45,7 @@ export class ProductService {
     product.title = updateData.title;
     product.description = updateData.description;
     // product.categories = updateData.categories;
+    product.characteristics = updateData.characteristics;
     product.items = updateData.items;
     product.price = updateData.price;
     product.currency = updateData.currency;
@@ -69,6 +70,7 @@ export class ProductService {
           [`title.ua`]: 1,
           ['description.ua']: 1,
           categories: 1,
+          characteristics: 1,
           items: 1,
           attrs: 1,
           quantity: 1,

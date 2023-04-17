@@ -9,6 +9,7 @@ export function mapProductDocumentToProductAdminDto(
     title: obj.title,
     description: obj.description,
     categories: obj.categories.map((category) => category.toString()),
+    characteristics: obj.characteristics,
     items: obj.items,
     attrs: obj.attrs,
     quantity: obj.quantity,

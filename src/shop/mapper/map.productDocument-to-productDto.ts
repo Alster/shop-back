@@ -11,6 +11,7 @@ export function mapProductDocumentToProductDto(
     title: getTranslation(obj.title, lang),
     description: getTranslation(obj.description, lang),
     categories: obj.categories.map((category) => category.toString()),
+    characteristics: obj.characteristics,
     items: obj.items,
     attrs: obj.attrs,
     quantity: obj.quantity,
