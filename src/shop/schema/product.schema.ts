@@ -55,6 +55,11 @@ export class Product {
   @IsString()
   currency!: string;
 
+  @Prop({ type: Number, default: 0 })
+  @IsInt()
+  @Min(0)
+  discount!: number;
+
   @Prop({ type: Boolean, default: false })
   @IsBoolean()
   active!: boolean;

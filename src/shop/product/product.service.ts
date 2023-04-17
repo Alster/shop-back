@@ -46,6 +46,8 @@ export class ProductService {
     // product.categories = updateData.categories;
     product.items = updateData.items;
     product.price = updateData.price;
+    product.currency = updateData.currency;
+    product.discount = updateData.discount;
     product.active = updateData.active;
     await product.save();
     return product;
