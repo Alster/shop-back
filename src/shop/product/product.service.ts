@@ -10,6 +10,7 @@ import {
 import { ProductListResponseDto } from '@shop/shared/dto/product-list.response.dto';
 import { mapProductDocumentToProductDto } from '../mapper/map.productDocument-to-productDto';
 import { ProductAdminDto, ProductDto } from '@shop/shared/dto/product.dto';
+import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocument-to-productAdminDto';
 
 @Injectable()
 export class ProductService {
@@ -72,6 +73,8 @@ export class ProductService {
           attrs: 1,
           quantity: 1,
           price: 1,
+          currency: 1,
+          discount: 1,
           active: 1,
           createDate: 1,
         })
@@ -99,7 +102,7 @@ export class ProductService {
 
     return {
       products: products.map((product) =>
-        mapProductDocumentToProductDto(product, 'ua'),
+        mapProductDocumentToProductAdminDto(product),
       ),
       total: products.length,
       filters: aggregatedAttributes,
