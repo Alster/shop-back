@@ -13,6 +13,7 @@ export function mapProductDocumentToProductAdminDto(
     attrs: obj.attrs,
     quantity: obj.quantity,
     price: obj.price,
+    currency: obj.currency,
     active: obj.active,
     createDate: 'no any date ololo',
   };
