@@ -12,6 +12,12 @@ import {
   Min,
 } from 'class-validator';
 import { AttributeType } from '../../constants/product';
+import { TranslatedText } from '@shop/shared/dto/translated-text';
+
+export interface AttributeValueDto {
+  key: string;
+  title: TranslatedText;
+}
 
 export type ItemAttributeDocument = HydratedDocument<ItemAttribute>;
 
@@ -36,9 +42,7 @@ export class ItemAttribute {
   type!: AttributeType;
 
   @Prop({ type: Array })
-  @IsArray()
-  @Length(1)
-  values: string[] = [];
+  values: AttributeValueDto[] = [];
 
   @Prop({ type: Boolean })
   @IsBoolean()

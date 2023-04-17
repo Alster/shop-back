@@ -60,6 +60,6 @@ export class ProductController {
   @Get('attribute/list')
   async getAttributes(): Promise<AttributeDto[]> {
     const res = await this.productService.getAttributes();
-    return res.map(mapAttributeDocumentToAttributeDTO);
+    return res.map((attr) => mapAttributeDocumentToAttributeDTO(attr, 'en'));
   }
 }
