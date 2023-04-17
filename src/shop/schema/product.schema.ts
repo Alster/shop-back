@@ -15,19 +15,19 @@ import {
   ProductAttributesDto,
   ProductItemDto,
 } from '@shop/shared/dto/product.dto';
+import { TranslatedText } from '@shop/shared/dto/translated-text';
 
 export type ProductDocument = HydratedDocument<Product>;
 
 @Schema()
 export class Product {
-  @Prop({ type: String, default: '' })
-  @IsString()
-  @Length(2, 400)
-  title!: string;
+  @Prop({ type: Object, default: {} })
+  @IsObject()
+  title!: TranslatedText;
 
-  @Prop({ type: String, default: '' })
-  @IsString()
-  description!: string;
+  @Prop({ type: Object, default: {} })
+  @IsObject()
+  description!: TranslatedText;
 
   @Prop({ type: Array, default: [] })
   @IsArray()
@@ -67,8 +67,7 @@ export class Product {
 export const ProductSchema = SchemaFactory.createForClass(Product);
 
 ProductSchema.pre('save', function (next) {
-  // Sum items quantity
-  this.quantity = this.items.reduce((acc, i) => acc + i.quantity, 0);
+  this.quantity = this.items.length;
 
   const aggregatedAttrs = this.items
     .flatMap((i) => Object.entries(i.attributes))

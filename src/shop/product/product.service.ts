@@ -9,7 +9,7 @@ import {
 } from '../schema/item-attribute.schema';
 import { ProductListResponseDto } from '@shop/shared/dto/product-list.response.dto';
 import { mapProductDocumentToProductDto } from '../mapper/map.productDocument-to-productDto';
-import { ProductDto } from '@shop/shared/dto/product.dto';
+import { ProductAdminDto, ProductDto } from '@shop/shared/dto/product.dto';
 
 @Injectable()
 export class ProductService {
@@ -25,7 +25,7 @@ export class ProductService {
     createProductRequestDto: CreateProductRequestDto,
   ): Promise<ProductDocument> {
     const product = await this.productModel.create({
-      title: createProductRequestDto.name,
+      title: { ua: createProductRequestDto.name },
       price: createProductRequestDto.price,
       items: createProductRequestDto.items,
       categories: [],
@@ -35,7 +35,7 @@ export class ProductService {
 
   public async updateProduct(
     id: string,
-    updateData: ProductDto,
+    updateData: ProductAdminDto,
   ): Promise<ProductDocument | null> {
     const product = await this.productModel.findById(id).exec();
     if (!product) {
@@ -60,7 +60,20 @@ export class ProductService {
   }
 
   public async find(query: any): Promise<ProductListResponseDto> {
-    const getProducts = async () => this.productModel.find(query).exec();
+    const getProducts = async () =>
+      this.productModel
+        .find(query, {
+          [`title.ua`]: 1,
+          ['description.ua']: 1,
+          categories: 1,
+          items: 1,
+          attrs: 1,
+          quantity: 1,
+          price: 1,
+          active: 1,
+          createDate: 1,
+        })
+        .exec();
     const getAggregatedAttributes = async () => {
       const [{ attrs }] = await this.productModel.aggregate([
         {
@@ -82,9 +95,10 @@ export class ProductService {
       getAggregatedAttributes(),
     ]);
 
-    // this.logger.log(JSON.stringify(aggregatedAttributes, null, 2));
     return {
-      products: products.map(mapProductDocumentToProductDto),
+      products: products.map((product) =>
+        mapProductDocumentToProductDto(product, 'ua'),
+      ),
       total: products.length,
       filters: aggregatedAttributes,
     };

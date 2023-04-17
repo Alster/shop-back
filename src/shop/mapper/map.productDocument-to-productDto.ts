@@ -1,13 +1,15 @@
 import { ProductDto } from '@shop/shared/dto/product.dto';
 import { ProductDocument } from '../schema/product.schema';
+import { getTranslation } from '../../helpers/translation-helpers';
 
 export function mapProductDocumentToProductDto(
   obj: ProductDocument,
+  lang: string,
 ): ProductDto {
   return {
     id: obj._id.toString(),
-    title: obj.title,
-    description: obj.description,
+    title: getTranslation(obj.title, lang),
+    description: getTranslation(obj.description, lang),
     categories: obj.categories.map((category) => category.toString()),
     items: obj.items,
     attrs: obj.attrs,

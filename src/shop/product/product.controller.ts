@@ -1,11 +1,12 @@
 import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
 import { ProductListResponseDto } from '@shop/shared/dto/product-list.response.dto';
-import { ProductDto } from '@shop/shared/dto/product.dto';
+import { ProductAdminDto, ProductDto } from '@shop/shared/dto/product.dto';
 import { CreateProductRequestDto } from '../dto/create-product.request.dto';
 import { ProductService } from './product.service';
 import { mapProductDocumentToProductDto } from '../mapper/map.productDocument-to-productDto';
 import { AttributeDto } from '@shop/shared/dto/attribute.dto';
 import { mapAttributeDocumentToAttributeDTO } from '../mapper/map.attributeDocument-to-attributeDTO';
+import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocument-to-productAdminDto';
 
 @Controller('product')
 export class ProductController {
@@ -16,34 +17,34 @@ export class ProductController {
   @Post('create')
   async postCreate(
     @Body() createProductRequestDto: CreateProductRequestDto,
-  ): Promise<ProductDto> {
+  ): Promise<ProductAdminDto> {
     this.logger.log(JSON.stringify(createProductRequestDto, null, 2));
     const res = await this.productService.createProduct(
       createProductRequestDto,
     );
 
-    return mapProductDocumentToProductDto(res);
+    return mapProductDocumentToProductAdminDto(res);
   }
 
   @Post('update/:id')
   async postUpdate(
-    @Body() updateData: ProductDto,
+    @Body() updateData: ProductAdminDto,
     @Param('id') id: string,
-  ): Promise<ProductDto> {
+  ): Promise<ProductAdminDto> {
     const res = await this.productService.updateProduct(id, updateData);
     if (!res) {
       throw new Error(`Product not found with id ${id}`);
     }
-    return mapProductDocumentToProductDto(res);
+    return mapProductDocumentToProductAdminDto(res);
   }
 
   @Get('get/:id')
-  async getProduct(@Param('id') id: string): Promise<ProductDto> {
+  async getProduct(@Param('id') id: string): Promise<ProductAdminDto> {
     const res = await this.productService.getProduct(id);
     if (!res) {
       throw new Error(`Product not found with id ${id}`);
     }
-    return mapProductDocumentToProductDto(res);
+    return mapProductDocumentToProductAdminDto(res);
   }
 
   @Post('delete/:id')
