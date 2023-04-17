@@ -8,8 +8,8 @@ export function mapAttributeDocumentToAttributeDTO(
 ): AttributeDto {
   return {
     id: obj._id.toString(),
-    title: obj.title,
-    description: obj.description,
+    title: getTranslation(obj.title, lang),
+    description: getTranslation(obj.description, lang),
     key: obj.key,
     type: obj.type,
     values: obj.values.map((value) => {

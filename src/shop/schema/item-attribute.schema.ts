@@ -23,14 +23,13 @@ export type ItemAttributeDocument = HydratedDocument<ItemAttribute>;
 
 @Schema()
 export class ItemAttribute {
-  @Prop({ type: String })
-  @IsString()
-  @Length(2, 400)
-  title = '';
+  @Prop({ type: Object, default: {} })
+  @IsObject()
+  title!: TranslatedText;
 
-  @Prop({ type: String })
-  @IsString()
-  description = '';
+  @Prop({ type: Object, default: {} })
+  @IsObject()
+  description!: TranslatedText;
 
   @Prop({ type: String, index: true })
   @IsString()
