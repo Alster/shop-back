@@ -5,8 +5,6 @@ import { ShopModule } from './shop/shop.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Config } from './config/config';
 import { validateAndThrow } from './helpers/validateAndThrow';
-import { CategoryService } from './shop/category/category.service';
-import { CategoryController } from './shop/category/category.controller';
 import mongoose from 'mongoose';
 
 @Module({
@@ -14,8 +12,8 @@ import mongoose from 'mongoose';
     MongooseModule.forRoot(Config.get().mongo.url, Config.get().mongo.options),
     ShopModule,
   ],
-  controllers: [AppController, CategoryController],
-  providers: [AppService, CategoryService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {
   constructor() {

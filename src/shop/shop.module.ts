@@ -7,15 +7,22 @@ import {
   ItemAttribute,
   ItemAttributeSchema,
 } from './schema/item-attribute.schema';
+import {
+  CategoriesTree,
+  CategoriesTreeSchema,
+} from './schema/categories-tree.schema';
+import { CategoryService } from './category/category.service';
+import { CategoryController } from './category/category.controller';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Product.name, schema: ProductSchema },
       { name: ItemAttribute.name, schema: ItemAttributeSchema },
+      { name: CategoriesTree.name, schema: CategoriesTreeSchema },
     ]),
   ],
-  providers: [ProductService],
-  controllers: [ProductController],
+  providers: [ProductService, CategoryService],
+  controllers: [ProductController, CategoryController],
 })
 export class ShopModule {}

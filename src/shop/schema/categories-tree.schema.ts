@@ -50,7 +50,8 @@ export type CategoriesTreeDocument = HydratedDocument<CategoriesTree>;
 export class CategoriesTree {
   @Prop({ type: Object, default: {} })
   @IsObject()
-  tree!: CategoryNode;
+  root!: CategoryNode[];
 }
 
-export const CategoryTreeSchema = SchemaFactory.createForClass(CategoriesTree);
+export const CategoriesTreeSchema =
+  SchemaFactory.createForClass(CategoriesTree);

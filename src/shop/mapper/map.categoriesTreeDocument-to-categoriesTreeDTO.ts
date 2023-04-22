@@ -29,6 +29,6 @@ export function mapCategoriesTreeDocumentToCategoriesTreeDTO(
   obj: CategoriesTreeDocument,
 ): CategoriesTreeDto {
   return {
-    tree: mapCategoryNodeToCategoriesNodeDTO(obj.tree),
+    root: obj.root.map(mapCategoryNodeToCategoriesNodeDTO),
   };
 }

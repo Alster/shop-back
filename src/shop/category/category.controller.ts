@@ -15,7 +15,6 @@ export class CategoryController {
   @Get('tree')
   async getCategoriesTrees(): Promise<CategoriesNodeDto[]> {
     const categoriesTree = await this.categoryService.getCategoriesTree();
-    return mapCategoriesTreeDocumentToCategoriesTreeDTO(categoriesTree).tree
-      .children;
+    return mapCategoriesTreeDocumentToCategoriesTreeDTO(categoriesTree).root;
   }
 }
