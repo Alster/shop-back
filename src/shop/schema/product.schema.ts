@@ -11,11 +11,11 @@ import {
   Min,
 } from 'class-validator';
 import { ObjectId } from 'mongodb';
+import { TranslatedText } from '../../../shopshared/dto/translated-text';
 import {
   ProductAttributesDto,
   ProductItemDto,
-} from '@shop/shared/dto/product.dto';
-import { TranslatedText } from '@shop/shared/dto/translated-text';
+} from '../../../shopshared/dto/product.dto';
 
 export type ProductDocument = HydratedDocument<Product>;
 

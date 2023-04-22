@@ -3,7 +3,7 @@ import { ProductService } from './product.service';
 import { Product, ProductDocument } from '../schema/product.schema';
 import { AppModule } from '../../app.module';
 import { ConsoleLogger } from '@nestjs/common';
-import mongoose, { Model, Types } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
 import {
   ItemAttribute,
@@ -11,7 +11,7 @@ import {
 } from '../schema/item-attribute.schema';
 import { ObjectId } from 'mongodb';
 import { MockColor, MockSize } from './mocks';
-import { AttributeType } from '../../constants/product';
+import { ATTRIBUTE_TYPE } from '@shop/shared/constants/product';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -23,7 +23,7 @@ describe('ProductService', () => {
       title: 'Color',
       description: 'Some color',
       key: 'color',
-      type: AttributeType.SELECT,
+      type: ATTRIBUTE_TYPE.SELECT,
       values: Object.values(MockColor),
       active: true,
     });
@@ -31,7 +31,7 @@ describe('ProductService', () => {
       title: 'Size',
       description: 'Some size',
       key: 'size',
-      type: AttributeType.SELECT,
+      type: ATTRIBUTE_TYPE.SELECT,
       values: Object.values(MockSize),
       active: true,
     });
@@ -67,20 +67,18 @@ describe('ProductService', () => {
       price: 100,
       items: [
         {
-          _id: new ObjectId().toString(),
+          sku: new ObjectId().toString(),
           attributes: {
             [attrColor.key]: [MockColor.BLUE],
             [attrSize.key]: [MockSize.S],
           },
-          quantity: 10,
         },
         {
-          _id: new ObjectId().toString(),
+          sku: new ObjectId().toString(),
           attributes: {
             [attrColor.key]: [MockColor.RED],
             [attrSize.key]: [MockSize.M],
           },
-          quantity: 10,
         },
       ],
     });
@@ -89,28 +87,25 @@ describe('ProductService', () => {
       price: 150,
       items: [
         {
-          _id: new ObjectId().toString(),
+          sku: new ObjectId().toString(),
           attributes: {
             [attrColor.key]: [MockColor.WHITE],
             [attrSize.key]: [MockSize.S],
           },
-          quantity: 10,
         },
         {
-          _id: new ObjectId().toString(),
+          sku: new ObjectId().toString(),
           attributes: {
             [attrColor.key]: [MockColor.BLACK],
             [attrSize.key]: [MockSize.M],
           },
-          quantity: 10,
         },
         {
-          _id: new ObjectId().toString(),
+          sku: new ObjectId().toString(),
           attributes: {
             [attrColor.key]: [MockColor.PINK],
             [attrSize.key]: [MockSize.L],
           },
-          quantity: 10,
         },
       ],
     });

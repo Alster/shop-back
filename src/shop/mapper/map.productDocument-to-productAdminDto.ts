@@ -1,5 +1,5 @@
-import { ProductAdminDto, ProductDto } from '@shop/shared/dto/product.dto';
 import { ProductDocument } from '../schema/product.schema';
+import { ProductAdminDto } from '../../../shopshared/dto/product.dto';
 
 export function mapProductDocumentToProductAdminDto(
   obj: ProductDocument,

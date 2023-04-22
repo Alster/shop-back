@@ -7,10 +7,9 @@ import {
   ItemAttribute,
   ItemAttributeDocument,
 } from '../schema/item-attribute.schema';
-import { ProductListResponseDto } from '@shop/shared/dto/product-list.response.dto';
-import { mapProductDocumentToProductDto } from '../mapper/map.productDocument-to-productDto';
-import { ProductAdminDto, ProductDto } from '@shop/shared/dto/product.dto';
 import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocument-to-productAdminDto';
+import { ProductAdminDto } from '../../../shopshared/dto/product.dto';
+import { ProductListResponseDto } from '../../../shopshared/dto/product-list.response.dto';
 
 @Injectable()
 export class ProductService {

@@ -1,12 +1,11 @@
 import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
-import { ProductListResponseDto } from '@shop/shared/dto/product-list.response.dto';
-import { ProductAdminDto, ProductDto } from '@shop/shared/dto/product.dto';
 import { CreateProductRequestDto } from '../dto/create-product.request.dto';
 import { ProductService } from './product.service';
-import { mapProductDocumentToProductDto } from '../mapper/map.productDocument-to-productDto';
-import { AttributeDto } from '@shop/shared/dto/attribute.dto';
 import { mapAttributeDocumentToAttributeDTO } from '../mapper/map.attributeDocument-to-attributeDTO';
 import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocument-to-productAdminDto';
+import { ProductAdminDto } from '../../../shopshared/dto/product.dto';
+import { ProductListResponseDto } from '../../../shopshared/dto/product-list.response.dto';
+import { AttributeDto } from '../../../shopshared/dto/attribute.dto';
 
 @Controller('product')
 export class ProductController {

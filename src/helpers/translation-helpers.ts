@@ -1,4 +1,4 @@
-import { TranslatedText } from '@shop/shared/dto/translated-text';
+import { TranslatedText } from '../../shopshared/dto/translated-text';
 
 export function getTranslation(
   translations: TranslatedText,

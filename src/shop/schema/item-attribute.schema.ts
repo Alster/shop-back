@@ -11,8 +11,11 @@ import {
   Length,
   Min,
 } from 'class-validator';
-import { AttributeType } from '../../constants/product';
-import { TranslatedText } from '@shop/shared/dto/translated-text';
+import { TranslatedText } from '../../../shopshared/dto/translated-text';
+import {
+  ATTRIBUTE_TYPE,
+  AttributeType,
+} from '../../../shopshared/constants/product';
 
 export interface AttributeValueDto {
   key: string;
@@ -37,7 +40,7 @@ export class ItemAttribute {
   key = '';
 
   @Prop({ type: String })
-  @IsEnum(AttributeType)
+  @IsEnum(ATTRIBUTE_TYPE)
   type!: AttributeType;
 
   @Prop({ type: Array })
