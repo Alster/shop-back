@@ -11,6 +11,7 @@ import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocume
 import { ProductAdminDto } from '../../../shopshared/dto/product.dto';
 import { ProductListResponseDto } from '../../../shopshared/dto/product-list.response.dto';
 import { ObjectId } from 'mongodb';
+import { Category, CategoryDocument } from '../schema/category.schema';
 
 @Injectable()
 export class ProductService {
@@ -20,6 +21,8 @@ export class ProductService {
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
     @InjectModel(ItemAttribute.name)
     private itemAttributeModel: Model<ItemAttributeDocument>,
+    @InjectModel(Category.name)
+    private categoryModel: Model<CategoryDocument>,
   ) {}
 
   public async createProduct(
@@ -38,6 +41,15 @@ export class ProductService {
     id: string,
     updateData: ProductAdminDto,
   ): Promise<ProductDocument | null> {
+    const categories = await this.categoryModel
+      .find(
+        {
+          _id: { $in: updateData.categories.map((id) => new ObjectId(id)) },
+        },
+        { parents: true },
+      )
+      .exec();
+
     const product = await this.productModel.findById(id).exec();
     if (!product) {
       return null;
@@ -45,6 +57,9 @@ export class ProductService {
     product.title = updateData.title;
     product.description = updateData.description;
     product.categories = updateData.categories.map((id) => new ObjectId(id));
+    product.categoriesAll = [
+      ...new Set(categories.map((category) => category.parents).flat()),
+    ];
     product.characteristics = updateData.characteristics;
     product.items = updateData.items;
     product.price = updateData.price;

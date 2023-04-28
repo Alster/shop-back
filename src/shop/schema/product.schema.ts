@@ -33,6 +33,10 @@ export class Product {
   @IsArray()
   categories!: ObjectId[];
 
+  @Prop({ type: Array, default: [] })
+  @IsArray()
+  categoriesAll!: ObjectId[];
+
   @Prop({ type: Object, default: {} })
   @IsObject()
   characteristics!: ProductAttributesDto;
