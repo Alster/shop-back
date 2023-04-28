@@ -6,6 +6,7 @@ import {
   CategoriesTreeDocument,
   CategoryNode,
 } from '../schema/categories-tree.schema';
+import { Category, CategoryDocument } from '../schema/category.schema';
 
 @Injectable()
 export class CategoryService {
@@ -14,6 +15,8 @@ export class CategoryService {
   constructor(
     @InjectModel(CategoriesTree.name)
     private categoriesModel: Model<CategoriesTreeDocument>,
+    @InjectModel(Category.name)
+    private categoryModel: Model<CategoryDocument>,
   ) {}
 
   public async getCategoriesTree(): Promise<CategoriesTreeDocument> {
@@ -27,12 +30,52 @@ export class CategoryService {
   public async saveCategoriesTree(
     categoriesTree: CategoryNode[],
   ): Promise<void> {
-    const foundTree = await this.categoriesModel.findOne().exec();
-    if (!foundTree) {
-      throw new Error('Categories tree not found');
+    const session = await this.categoriesModel.startSession();
+
+    await session.withTransaction(async () => {
+      const foundTree = await this.categoriesModel
+        .findOne()
+        .session(session)
+        .exec();
+      if (!foundTree) {
+        throw new Error('Categories tree not found');
+      }
+
+      await this.categoriesModel
+        .updateOne(
+          { _id: foundTree._id },
+          { $set: { root: categoriesTree } },
+          { session },
+        )
+        .exec();
+
+      await this.categoryModel.deleteMany({}).session(session).exec();
+      const categories = this.getCategories(categoriesTree, []);
+      await this.categoryModel.insertMany(categories, { session });
+    });
+
+    await session.endSession();
+  }
+
+  getCategories(
+    categoriesTree: CategoryNode[],
+    parents: CategoryNode[],
+  ): Category[] {
+    const categories: Category[] = [];
+    for (const category of categoriesTree) {
+      categories.push({
+        _id: category._id,
+        title: category.title,
+        description: category.description,
+        children: category.children.map((child) => child._id),
+        parents: parents.map((parent) => parent._id),
+        sort: category.sort,
+      });
+      categories.push(
+        ...this.getCategories(category.children, [...parents, category]),
+      );
     }
-    await this.categoriesModel
-      .updateOne({ _id: foundTree._id }, { $set: { root: categoriesTree } })
-      .exec();
+
+    return categories;
   }
 }

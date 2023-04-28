@@ -13,6 +13,7 @@ import {
 } from './schema/categories-tree.schema';
 import { CategoryService } from './category/category.service';
 import { CategoryController } from './category/category.controller';
+import { Category, CategorySchema } from './schema/category.schema';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CategoryController } from './category/category.controller';
       { name: Product.name, schema: ProductSchema },
       { name: ItemAttribute.name, schema: ItemAttributeSchema },
       { name: CategoriesTree.name, schema: CategoriesTreeSchema },
+      { name: Category.name, schema: CategorySchema },
     ]),
   ],
   providers: [ProductService, CategoryService],
