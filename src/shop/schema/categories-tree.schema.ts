@@ -13,14 +13,10 @@ import {
   Min,
 } from 'class-validator';
 import { TranslatedText } from '../../../shopshared/dto/translated-text';
-import {
-  ATTRIBUTE_TYPE,
-  AttributeType,
-} from '../../../shopshared/constants/product';
 import { ObjectId } from 'mongodb';
 
 export class CategoryNode {
-  @Prop({ type: ObjectId })
+  @Prop({ type: Object })
   _id!: ObjectId;
 
   @Prop({ type: Object, default: {} })

@@ -1,7 +1,5 @@
-import { ItemAttributeDocument } from '../schema/item-attribute.schema';
-import { getTranslation } from '../../helpers/translation-helpers';
-import { AttributeDto } from '../../../shopshared/dto/attribute.dto';
 import {
+  CategoriesTree,
   CategoriesTreeDocument,
   CategoryNode,
 } from '../schema/categories-tree.schema';
@@ -9,6 +7,7 @@ import {
   CategoriesNodeDto,
   CategoriesTreeDto,
 } from '../../../shopshared/dto/categories-tree.dto';
+import { ObjectId } from 'mongodb';
 
 function mapCategoryNodeToCategoriesNodeDTO(
   obj: CategoryNode,
@@ -30,5 +29,28 @@ export function mapCategoriesTreeDocumentToCategoriesTreeDTO(
 ): CategoriesTreeDto {
   return {
     root: obj.root.map(mapCategoryNodeToCategoriesNodeDTO),
+  };
+}
+
+export function mapCategoriesNodeDTOToCategoryNode(
+  obj: CategoriesNodeDto,
+): CategoryNode {
+  return {
+    _id: new ObjectId(obj.id),
+    title: obj.title,
+    description: obj.title,
+    children: obj.children.map((child) =>
+      mapCategoriesNodeDTOToCategoryNode(child),
+    ),
+    sort: obj.sort,
+    active: obj.active,
+  };
+}
+
+export function mapCategoriesTreeDTOToCategories(
+  obj: CategoryNode[],
+): CategoriesTree {
+  return {
+    root: obj,
   };
 }

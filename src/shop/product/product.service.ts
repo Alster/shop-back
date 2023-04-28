@@ -10,6 +10,7 @@ import {
 import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocument-to-productAdminDto';
 import { ProductAdminDto } from '../../../shopshared/dto/product.dto';
 import { ProductListResponseDto } from '../../../shopshared/dto/product-list.response.dto';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class ProductService {
@@ -43,7 +44,7 @@ export class ProductService {
     }
     product.title = updateData.title;
     product.description = updateData.description;
-    // product.categories = updateData.categories;
+    product.categories = updateData.categories.map((id) => new ObjectId(id));
     product.characteristics = updateData.characteristics;
     product.items = updateData.items;
     product.price = updateData.price;

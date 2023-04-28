@@ -1,10 +1,10 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { CategoryService } from './category.service';
+import { CategoriesNodeDto } from '../../../shopshared/dto/categories-tree.dto';
 import {
-  CategoriesNodeDto,
-  CategoriesTreeDto,
-} from '../../../shopshared/dto/categories-tree.dto';
-import { mapCategoriesTreeDocumentToCategoriesTreeDTO } from '../mapper/map.categoriesTreeDocument-to-categoriesTreeDTO';
+  mapCategoriesNodeDTOToCategoryNode,
+  mapCategoriesTreeDocumentToCategoriesTreeDTO,
+} from '../mapper/map.categoriesTreeDocument-to-categoriesTreeDTO';
 
 @Controller('category')
 export class CategoryController {
@@ -16,5 +16,13 @@ export class CategoryController {
   async getCategoriesTrees(): Promise<CategoriesNodeDto[]> {
     const categoriesTree = await this.categoryService.getCategoriesTree();
     return mapCategoriesTreeDocumentToCategoriesTreeDTO(categoriesTree).root;
+  }
+
+  @Post('tree')
+  async saveCategoriesTrees(
+    @Body() categoriesNodes: CategoriesNodeDto[],
+  ): Promise<void> {
+    const nodes = categoriesNodes.map(mapCategoriesNodeDTOToCategoryNode);
+    await this.categoryService.saveCategoriesTree(nodes);
   }
 }
