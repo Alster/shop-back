@@ -38,6 +38,36 @@ export class ProductService {
     return product;
   }
 
+  public async cloneProduct(referenceId: string): Promise<ProductDocument> {
+    const referenceProduct = await this.productModel
+      .findById(referenceId)
+      .exec();
+    if (!referenceProduct) {
+      throw new Error(`Product not found with id ${referenceId}`);
+    }
+
+    const createdProduct = await this.createProduct({
+      name: 'tmp name',
+      price: 1,
+      items: [],
+    });
+
+    const updateData = mapProductDocumentToProductAdminDto(referenceProduct);
+    updateData.active = false;
+
+    const res = await this.updateProduct(
+      createdProduct._id.toString(),
+      updateData,
+    );
+    if (!res) {
+      throw new Error(
+        `Product not found with id ${createdProduct._id.toString()}`,
+      );
+    }
+
+    return res;
+  }
+
   public async updateProduct(
     id: string,
     updateData: ProductAdminDto,
@@ -132,6 +162,19 @@ export class ProductService {
       getProducts(),
       getAggregation(),
     ]);
+
+    const [anotherAggregate] = await this.productModel.aggregate([
+      {
+        $match: query,
+      },
+      {
+        $group: {
+          _id: null,
+          attrs: { $mergeObjects: '$attrs' },
+        },
+      },
+    ]);
+    console.log(anotherAggregate);
 
     return {
       products: products.map((product) =>

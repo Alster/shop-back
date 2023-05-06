@@ -47,6 +47,12 @@ export class ProductController {
     return mapProductDocumentToProductAdminDto(res);
   }
 
+  @Post('clone/:id')
+  async postClone(@Param('id') id: string): Promise<ProductAdminDto> {
+    const res = await this.productService.cloneProduct(id);
+    return mapProductDocumentToProductAdminDto(res);
+  }
+
   @Get('get/:id')
   async getProduct(@Param('id') id: string): Promise<ProductAdminDto> {
     const res = await this.productService.getProduct(id);
