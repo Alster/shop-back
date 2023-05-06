@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateProductRequestDto } from '../dto/create-product.request.dto';
 import { ProductService } from './product.service';
 import { mapAttributeDocumentToAttributeDTO } from '../mapper/map.attributeDocument-to-attributeDTO';
@@ -7,6 +15,7 @@ import { ProductAdminDto } from '../../../shopshared/dto/product.dto';
 import { ProductListResponseDto } from '../../../shopshared/dto/product-list.response.dto';
 import { AttributeDto } from '../../../shopshared/dto/attribute.dto';
 import { LanguageEnum } from '../../../shopshared/constants/localization';
+import { MockColor } from './mocks';
 
 @Controller('product')
 export class ProductController {
@@ -53,13 +62,24 @@ export class ProductController {
   }
 
   @Get('list')
-  async list(): Promise<ProductListResponseDto> {
-    return await this.productService.find({}, LanguageEnum.UA);
+  async list(
+    @Query('attrs') attrs: { key: string; values: string[] }[],
+  ): Promise<ProductListResponseDto> {
+    console.log('Attrs:', attrs);
+    const query: any = {};
+    if (attrs) {
+      attrs.forEach(({ key, values }) => {
+        query[`attrs.${key}`] = { $in: values };
+      });
+    }
+    return await this.productService.find(query, LanguageEnum.UA);
   }
 
   @Get('attribute/list')
   async getAttributes(): Promise<AttributeDto[]> {
     const res = await this.productService.getAttributes();
-    return res.map((attr) => mapAttributeDocumentToAttributeDTO(attr, 'en'));
+    return res.map((attr) =>
+      mapAttributeDocumentToAttributeDTO(attr, LanguageEnum.UA),
+    );
   }
 }

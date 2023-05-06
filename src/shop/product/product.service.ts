@@ -83,6 +83,7 @@ export class ProductService {
     query: any,
     lang: LanguageEnum,
   ): Promise<ProductListResponseDto> {
+    console.log('Query:', JSON.stringify(query, null, 2));
     const getProducts = async () =>
       this.productModel
         .find(query, {
