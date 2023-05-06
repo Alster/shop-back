@@ -6,6 +6,7 @@ import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocume
 import { ProductAdminDto } from '../../../shopshared/dto/product.dto';
 import { ProductListResponseDto } from '../../../shopshared/dto/product-list.response.dto';
 import { AttributeDto } from '../../../shopshared/dto/attribute.dto';
+import { LanguageEnum } from '../../../shopshared/constants/localization';
 
 @Controller('product')
 export class ProductController {
@@ -53,7 +54,7 @@ export class ProductController {
 
   @Get('list')
   async list(): Promise<ProductListResponseDto> {
-    return await this.productService.find({});
+    return await this.productService.find({}, LanguageEnum.UA);
   }
 
   @Get('attribute/list')

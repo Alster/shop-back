@@ -12,6 +12,7 @@ import { ProductAdminDto } from '../../../shopshared/dto/product.dto';
 import { ProductListResponseDto } from '../../../shopshared/dto/product-list.response.dto';
 import { ObjectId } from 'mongodb';
 import { Category, CategoryDocument } from '../schema/category.schema';
+import { LanguageEnum } from '../../../shopshared/constants/localization';
 
 @Injectable()
 export class ProductService {
@@ -78,12 +79,15 @@ export class ProductService {
     await this.productModel.findByIdAndDelete(id).exec();
   }
 
-  public async find(query: any): Promise<ProductListResponseDto> {
+  public async find(
+    query: any,
+    lang: LanguageEnum,
+  ): Promise<ProductListResponseDto> {
     const getProducts = async () =>
       this.productModel
         .find(query, {
-          [`title.ua`]: 1,
-          ['description.ua']: 1,
+          [`title.${lang}`]: 1,
+          [`description.${lang}`]: 1,
           categories: 1,
           characteristics: 1,
           items: 1,
@@ -96,25 +100,36 @@ export class ProductService {
           createDate: 1,
         })
         .exec();
-    const getAggregatedAttributes = async () => {
-      const [{ attrs }] = await this.productModel.aggregate([
+    const getAggregation = async () => {
+      const [result] = await this.productModel.aggregate([
         {
           $match: query,
         },
         {
           $group: {
             _id: null,
-            attrs: {
-              $mergeObjects: '$attrs',
+            attrs: { $mergeObjects: '$attrs' },
+            categories: { $addToSet: `$categories` },
+          },
+        },
+        {
+          $project: {
+            attrs: 1,
+            categories: {
+              $reduce: {
+                input: '$categories',
+                initialValue: [],
+                in: { $setUnion: ['$$value', '$$this'] },
+              },
             },
           },
         },
       ]);
-      return attrs;
+      return result;
     };
-    const [products, aggregatedAttributes] = await Promise.all([
+    const [products, aggregatedResult] = await Promise.all([
       getProducts(),
-      getAggregatedAttributes(),
+      getAggregation(),
     ]);
 
     return {
@@ -122,7 +137,8 @@ export class ProductService {
         mapProductDocumentToProductAdminDto(product),
       ),
       total: products.length,
-      filters: aggregatedAttributes,
+      filters: aggregatedResult.attrs,
+      categories: aggregatedResult.categories,
     };
   }
 

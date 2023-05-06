@@ -11,7 +11,8 @@ import {
 } from '../schema/item-attribute.schema';
 import { ObjectId } from 'mongodb';
 import { MockColor, MockSize } from './mocks';
-import { ATTRIBUTE_TYPE } from '@shop/shared/constants/product';
+import { LanguageEnum } from '../../../shopshared/constants/localization';
+import { ATTRIBUTE_TYPE } from '../../../shopshared/constants/product';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -110,9 +111,12 @@ describe('ProductService', () => {
       ],
     });
 
-    const res = await service.find({
-      [`attrs.${attrColor.key}`]: { $in: [MockColor.RED] },
-    });
+    const res = await service.find(
+      {
+        [`attrs.${attrColor.key}`]: { $in: [MockColor.RED] },
+      },
+      LanguageEnum.UA,
+    );
     console.log(JSON.stringify(res, null, 2));
   });
 });
