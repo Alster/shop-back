@@ -50,14 +50,18 @@ export class CategoryService {
         .exec();
 
       await this.categoryModel.deleteMany({}).session(session).exec();
-      const categories = this.getCategories(categoriesTree, []);
+      const categories = this.convertTreeToCategories(categoriesTree, []);
       await this.categoryModel.insertMany(categories, { session });
     });
 
     await session.endSession();
   }
 
-  getCategories(
+  getCategories(): Promise<Category[]> {
+    return this.categoryModel.find().exec();
+  }
+
+  private convertTreeToCategories(
     categoriesTree: CategoryNode[],
     parents: CategoryNode[],
   ): Category[] {
@@ -72,7 +76,10 @@ export class CategoryService {
         sort: category.sort,
       });
       categories.push(
-        ...this.getCategories(category.children, [...parents, category]),
+        ...this.convertTreeToCategories(category.children, [
+          ...parents,
+          category,
+        ]),
       );
     }
 

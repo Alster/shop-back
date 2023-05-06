@@ -5,6 +5,9 @@ import {
   mapCategoriesNodeDTOToCategoryNode,
   mapCategoriesTreeDocumentToCategoriesTreeDTO,
 } from '../mapper/map.categoriesTreeDocument-to-categoriesTreeDTO';
+import { CategoryDto } from '../../../shopshared/dto/category.dto';
+import { mapCategoryToCategoryDto } from '../mapper/map.category-to-categoryDTO';
+import { LanguageEnum } from '../../../shopshared/constants/localization';
 
 @Controller('category')
 export class CategoryController {
@@ -24,5 +27,13 @@ export class CategoryController {
   ): Promise<void> {
     const nodes = categoriesNodes.map(mapCategoriesNodeDTOToCategoryNode);
     await this.categoryService.saveCategoriesTree(nodes);
+  }
+
+  @Get('list')
+  async getCategories(): Promise<CategoryDto[]> {
+    const categories = await this.categoryService.getCategories();
+    return categories.map((category) =>
+      mapCategoryToCategoryDto(category, LanguageEnum.UA),
+    );
   }
 }
