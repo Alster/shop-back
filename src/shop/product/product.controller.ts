@@ -75,6 +75,7 @@ export class ProductController {
     @Query('sortOrder') sortOrder: number,
     @Query('skip') skip: number,
     @Query('limit') limit: number,
+    @Query('search') search: string,
   ): Promise<ProductListResponseDto> {
     console.log('Attrs:', attrs);
     const query: any = {};
@@ -85,6 +86,11 @@ export class ProductController {
     }
     if (categories) {
       query.categoriesAll = { $in: categories.map((id) => new ObjectId(id)) };
+    }
+    if (search) {
+      query.$text = {
+        $search: search,
+      };
     }
 
     const sort: any = {};

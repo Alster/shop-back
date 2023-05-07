@@ -192,8 +192,8 @@ export class ProductService {
         mapProductDocumentToProductAdminDto(product),
       ),
       total: totalCount,
-      filters: aggregatedResult?.attrs,
-      categories: aggregatedResult?.categories,
+      filters: aggregatedResult?.attrs || {},
+      categories: aggregatedResult?.categories || [],
     };
   }
 

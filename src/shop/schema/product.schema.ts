@@ -25,6 +25,10 @@ export class Product {
   @IsObject()
   title!: TranslatedText;
 
+  @Prop({ type: String, default: '' })
+  @IsString()
+  searchWords!: string;
+
   @Prop({ type: Object, default: {} })
   @IsObject()
   description!: TranslatedText;
@@ -110,5 +114,8 @@ ProductSchema.pre('save', function (next) {
   );
   console.log(aggregatedAttrs);
   console.log(this.attrs);
+
+  this.searchWords = Object.values(this.title).join(' ');
+
   next();
 });
