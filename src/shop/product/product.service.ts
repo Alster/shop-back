@@ -178,9 +178,6 @@ export class ProductService {
       getAggregation(),
     ]);
 
-    console.log(aggregatedResult);
-    console.log(products);
-
     return {
       products: products.map((product) =>
         mapProductDocumentToProductAdminDto(product),
