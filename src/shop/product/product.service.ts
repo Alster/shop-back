@@ -117,9 +117,13 @@ export class ProductService {
 
   public async find(
     query: any,
+    sort: any,
+    skip: number,
+    limit: number,
     lang: LanguageEnum,
   ): Promise<ProductListResponseDto> {
     console.log('Query:', JSON.stringify(query, null, 2));
+    console.log('Sort:', JSON.stringify(sort, null, 2));
     const getProducts = async () =>
       this.productModel
         .find(query, {
@@ -136,7 +140,11 @@ export class ProductService {
           active: 1,
           createDate: 1,
         })
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
         .exec();
+    const getCount = async () => this.productModel.countDocuments(query);
     const getAggregation = async () => {
       const [result] = await this.productModel.aggregate([
         {
@@ -173,16 +181,17 @@ export class ProductService {
       ]);
       return result;
     };
-    const [products, aggregatedResult] = await Promise.all([
+    const [products, aggregatedResult, totalCount] = await Promise.all([
       getProducts(),
       getAggregation(),
+      getCount(),
     ]);
 
     return {
       products: products.map((product) =>
         mapProductDocumentToProductAdminDto(product),
       ),
-      total: products.length,
+      total: totalCount,
       filters: aggregatedResult?.attrs,
       categories: aggregatedResult?.categories,
     };

@@ -115,6 +115,9 @@ describe('ProductService', () => {
       {
         [`attrs.${attrColor.key}`]: { $in: [MockColor.RED] },
       },
+      {},
+      0,
+      999,
       LanguageEnum.UA,
     );
     console.log(JSON.stringify(res, null, 2));

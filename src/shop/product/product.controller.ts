@@ -71,6 +71,10 @@ export class ProductController {
   async list(
     @Query('attrs') attrs: { key: string; values: string[] }[],
     @Query('categories') categories: string[],
+    @Query('sortField') sortField: string,
+    @Query('sortOrder') sortOrder: number,
+    @Query('skip') skip: number,
+    @Query('limit') limit: number,
   ): Promise<ProductListResponseDto> {
     console.log('Attrs:', attrs);
     const query: any = {};
@@ -82,7 +86,23 @@ export class ProductController {
     if (categories) {
       query.categoriesAll = { $in: categories.map((id) => new ObjectId(id)) };
     }
-    return await this.productService.find(query, LanguageEnum.UA);
+
+    const sort: any = {};
+    if (sortField) {
+      if (sortField === 'title') {
+        sort[`${sortField}.${LanguageEnum.UA}`] = sortOrder;
+      } else {
+        sort[sortField] = sortOrder;
+      }
+    }
+
+    return await this.productService.find(
+      query,
+      sort,
+      skip,
+      limit,
+      LanguageEnum.UA,
+    );
   }
 
   @Get('attribute/list')
