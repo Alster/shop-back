@@ -15,7 +15,7 @@ import { ProductAdminDto } from '../../../shopshared/dto/product.dto';
 import { ProductListResponseDto } from '../../../shopshared/dto/product-list.response.dto';
 import { AttributeDto } from '../../../shopshared/dto/attribute.dto';
 import { LanguageEnum } from '../../../shopshared/constants/localization';
-import { MockColor } from './mocks';
+import { ObjectId } from 'mongodb';
 
 @Controller('product')
 export class ProductController {
@@ -70,6 +70,7 @@ export class ProductController {
   @Get('list')
   async list(
     @Query('attrs') attrs: { key: string; values: string[] }[],
+    @Query('categories') categories: string[],
   ): Promise<ProductListResponseDto> {
     console.log('Attrs:', attrs);
     const query: any = {};
@@ -77,6 +78,9 @@ export class ProductController {
       attrs.forEach(({ key, values }) => {
         query[`attrs.${key}`] = { $in: values };
       });
+    }
+    if (categories) {
+      query.categoriesAll = { $in: categories.map((id) => new ObjectId(id)) };
     }
     return await this.productService.find(query, LanguageEnum.UA);
   }

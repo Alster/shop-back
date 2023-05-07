@@ -92,7 +92,10 @@ export class ProductService {
     product.description = updateData.description;
     product.categories = updateData.categories.map((id) => new ObjectId(id));
     product.categoriesAll = [
-      ...new Set(categories.map((category) => category.parents).flat()),
+      ...new Set([
+        ...categories.map((category) => category._id),
+        ...categories.map((category) => category.parents).flat(),
+      ]),
     ];
     product.characteristics = updateData.characteristics;
     product.items = updateData.items;
@@ -175,13 +178,16 @@ export class ProductService {
       getAggregation(),
     ]);
 
+    console.log(aggregatedResult);
+    console.log(products);
+
     return {
       products: products.map((product) =>
         mapProductDocumentToProductAdminDto(product),
       ),
       total: products.length,
-      filters: aggregatedResult.attrs,
-      categories: aggregatedResult.categories,
+      filters: aggregatedResult?.attrs,
+      categories: aggregatedResult?.categories,
     };
   }
 
