@@ -8,7 +8,10 @@ import {
   ItemAttributeDocument,
 } from '../schema/item-attribute.schema';
 import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocument-to-productAdminDto';
-import { ProductAdminDto } from '../../../shopshared/dto/product.dto';
+import {
+  ProductAdminDto,
+  ProductAttributesDto,
+} from '../../../shopshared/dto/product.dto';
 import { ProductListResponseDto } from '../../../shopshared/dto/product-list.response.dto';
 import { ObjectId } from 'mongodb';
 import { Category, CategoryDocument } from '../schema/category.schema';
@@ -139,7 +142,16 @@ export class ProductService {
         {
           $group: {
             _id: null,
-            attrs: { $mergeObjects: '$attrs' },
+            attrs: {
+              $accumulator: {
+                init: AttrsAccumulator.init.toString(),
+                accumulateArgs: ['$attrs'],
+                accumulate: AttrsAccumulator.accumulate.toString(),
+                merge: AttrsAccumulator.merge.toString(),
+                finalize: AttrsAccumulator.finalize.toString(),
+                lang: 'js',
+              },
+            },
             categories: { $addToSet: `$categories` },
           },
         },
@@ -163,19 +175,6 @@ export class ProductService {
       getAggregation(),
     ]);
 
-    const [anotherAggregate] = await this.productModel.aggregate([
-      {
-        $match: query,
-      },
-      {
-        $group: {
-          _id: null,
-          attrs: { $mergeObjects: '$attrs' },
-        },
-      },
-    ]);
-    console.log(anotherAggregate);
-
     return {
       products: products.map((product) =>
         mapProductDocumentToProductAdminDto(product),
@@ -190,3 +189,38 @@ export class ProductService {
     return await this.itemAttributeModel.find().exec();
   }
 }
+
+const AttrsAccumulator = {
+  init: function () {
+    return {};
+  },
+  accumulate: function (
+    state: ProductAttributesDto,
+    doc: ProductAttributesDto,
+  ) {
+    for (const key in doc) {
+      if (Object.prototype.hasOwnProperty.call(state, key)) {
+        state[key] = state[key].concat(doc[key]);
+      } else {
+        state[key] = doc[key];
+      }
+    }
+    return state;
+  },
+  merge: function (state: ProductAttributesDto, doc: ProductAttributesDto) {
+    for (const key in doc) {
+      if (Object.prototype.hasOwnProperty.call(state, key)) {
+        state[key] = state[key].concat(doc[key]);
+      } else {
+        state[key] = doc[key];
+      }
+    }
+    return state;
+  },
+  finalize: function (state: ProductAttributesDto) {
+    for (const key in state) {
+      state[key] = [...new Set(state[key])];
+    }
+    return state;
+  },
+};
