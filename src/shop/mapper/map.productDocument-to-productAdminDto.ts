@@ -1,5 +1,5 @@
 import { ProductDocument } from '../../../shop_shared_server/schema/product.schema';
-import { ProductAdminDto } from '@alster/shop-shared/dto/product.dto';
+import { ProductAdminDto } from '../../../shop_shared/dto/product.dto';
 
 export function mapProductDocumentToProductAdminDto(
   obj: ProductDocument,

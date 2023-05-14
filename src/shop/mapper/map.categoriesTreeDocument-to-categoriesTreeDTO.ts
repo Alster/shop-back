@@ -3,11 +3,11 @@ import {
   CategoriesTreeDocument,
   CategoryNode,
 } from '../../../shop_shared_server/schema/categories-tree.schema';
+import { ObjectId } from 'mongodb';
 import {
   CategoriesNodeDto,
   CategoriesTreeDto,
-} from '@alster/shop-shared/dto/categories-tree.dto';
-import { ObjectId } from 'mongodb';
+} from '../../../shop_shared/dto/categories-tree.dto';
 
 function mapCategoryNodeToCategoriesNodeDTO(
   obj: CategoryNode,
