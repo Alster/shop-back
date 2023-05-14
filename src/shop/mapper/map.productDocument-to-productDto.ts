@@ -1,6 +1,6 @@
 import { ProductDocument } from '../schema/product.schema';
 import { getTranslation } from '../../helpers/translation-helpers';
-import { ProductDto } from '../../../shopshared/dto/product.dto';
+import { ProductDto } from '@alster/shop-shared/dto/product.dto';
 
 export function mapProductDocumentToProductDto(
   obj: ProductDocument,

@@ -11,11 +11,11 @@ import {
   Length,
   Min,
 } from 'class-validator';
-import { TranslatedText } from '../../../shopshared/dto/translated-text';
+import { TranslatedText } from '@alster/shop-shared/dto/translated-text';
 import {
   ATTRIBUTE_TYPE,
   AttributeType,
-} from '../../../shopshared/constants/product';
+} from '@alster/shop-shared/constants/product';
 
 export interface AttributeValueDto {
   key: string;

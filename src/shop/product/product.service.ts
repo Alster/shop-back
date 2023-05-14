@@ -11,11 +11,11 @@ import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocume
 import {
   ProductAdminDto,
   ProductAttributesDto,
-} from '../../../shopshared/dto/product.dto';
-import { ProductListResponseDto } from '../../../shopshared/dto/product-list.response.dto';
+} from '@alster/shop-shared/dto/product.dto';
+import { ProductListResponseDto } from '@alster/shop-shared/dto/product-list.response.dto';
 import { ObjectId } from 'mongodb';
 import { Category, CategoryDocument } from '../schema/category.schema';
-import { LanguageEnum } from '../../../shopshared/constants/localization';
+import { LanguageEnum } from '@alster/shop-shared/constants/localization';
 
 @Injectable()
 export class ProductService {

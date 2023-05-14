@@ -6,7 +6,7 @@ import {
 import {
   CategoriesNodeDto,
   CategoriesTreeDto,
-} from '../../../shopshared/dto/categories-tree.dto';
+} from '@alster/shop-shared/dto/categories-tree.dto';
 import { ObjectId } from 'mongodb';
 
 function mapCategoryNodeToCategoriesNodeDTO(

@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { CategoriesNodeDto } from '../../../shopshared/dto/categories-tree.dto';
+import { CategoriesNodeDto } from '@alster/shop-shared/dto/categories-tree.dto';
 import {
   mapCategoriesNodeDTOToCategoryNode,
   mapCategoriesTreeDocumentToCategoriesTreeDTO,
 } from '../mapper/map.categoriesTreeDocument-to-categoriesTreeDTO';
-import { CategoryDto } from '../../../shopshared/dto/category.dto';
+import { CategoryDto } from '@alster/shop-shared/dto/category.dto';
 import { mapCategoryToCategoryDto } from '../mapper/map.category-to-categoryDTO';
-import { LanguageEnum } from '../../../shopshared/constants/localization';
+import { LanguageEnum } from '@alster/shop-shared/constants/localization';
 
 @Controller('category')
 export class CategoryController {

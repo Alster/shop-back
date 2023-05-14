@@ -11,10 +11,10 @@ import { CreateProductRequestDto } from '../dto/create-product.request.dto';
 import { ProductService } from './product.service';
 import { mapAttributeDocumentToAttributeDTO } from '../mapper/map.attributeDocument-to-attributeDTO';
 import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocument-to-productAdminDto';
-import { ProductAdminDto } from '../../../shopshared/dto/product.dto';
-import { ProductListResponseDto } from '../../../shopshared/dto/product-list.response.dto';
-import { AttributeDto } from '../../../shopshared/dto/attribute.dto';
-import { LanguageEnum } from '../../../shopshared/constants/localization';
+import { ProductAdminDto } from '@alster/shop-shared/dto/product.dto';
+import { ProductListResponseDto } from '@alster/shop-shared/dto/product-list.response.dto';
+import { AttributeDto } from '@alster/shop-shared/dto/attribute.dto';
+import { LanguageEnum } from '@alster/shop-shared/constants/localization';
 import { ObjectId } from 'mongodb';
 
 @Controller('product')

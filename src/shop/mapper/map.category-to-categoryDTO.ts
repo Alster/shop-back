@@ -1,6 +1,6 @@
-import { CategoryDto } from '../../../shopshared/dto/category.dto';
+import { CategoryDto } from '@alster/shop-shared/dto/category.dto';
 import { Category } from '../schema/category.schema';
-import { LanguageEnum } from '../../../shopshared/constants/localization';
+import { LanguageEnum } from '@alster/shop-shared/constants/localization';
 
 export function mapCategoryToCategoryDto(
   obj: Category,
