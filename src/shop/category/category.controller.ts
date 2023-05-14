@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
-import { CategoryService } from './category.service';
+import { CategoryService } from '../../../shop_shared_server/service/category/category.service';
 import {
   mapCategoriesNodeDTOToCategoryNode,
   mapCategoriesTreeDocumentToCategoriesTreeDTO,
