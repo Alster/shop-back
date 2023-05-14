@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Logger,
-  Param,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
 import { ProductService } from '../../../shop_shared_server/service/product/product.service';
 import { mapAttributeDocumentToAttributeDTO } from '../mapper/map.attributeDocument-to-attributeDTO';
 import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocument-to-productAdminDto';

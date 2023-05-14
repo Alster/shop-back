@@ -1,5 +1,5 @@
 import { ItemAttributeDocument } from '../../../shop_shared_server/schema/item-attribute.schema';
-import { getTranslation } from '../../helpers/translation-helpers';
+import { getTranslation } from '../../../shop_shared_server/helpers/translation-helpers';
 import { AttributeDto } from '../../../shop_shared/dto/attribute.dto';
 
 export function mapAttributeDocumentToAttributeDTO(
