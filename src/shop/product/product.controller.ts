@@ -7,7 +7,6 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateProductRequestDto } from '../dto/create-product.request.dto';
 import { ProductService } from '../../../shop_shared_server/service/product/product.service';
 import { mapAttributeDocumentToAttributeDTO } from '../mapper/map.attributeDocument-to-attributeDTO';
 import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocument-to-productAdminDto';
@@ -23,36 +22,6 @@ export class ProductController {
 
   private logger: Logger = new Logger(ProductController.name);
 
-  @Post('create')
-  async postCreate(
-    @Body() createProductRequestDto: CreateProductRequestDto,
-  ): Promise<ProductAdminDto> {
-    this.logger.log(JSON.stringify(createProductRequestDto, null, 2));
-    const res = await this.productService.createProduct(
-      createProductRequestDto,
-    );
-
-    return mapProductDocumentToProductAdminDto(res);
-  }
-
-  @Post('update/:id')
-  async postUpdate(
-    @Body() updateData: ProductAdminDto,
-    @Param('id') id: string,
-  ): Promise<ProductAdminDto> {
-    const res = await this.productService.updateProduct(id, updateData);
-    if (!res) {
-      throw new Error(`Product not found with id ${id}`);
-    }
-    return mapProductDocumentToProductAdminDto(res);
-  }
-
-  @Post('clone/:id')
-  async postClone(@Param('id') id: string): Promise<ProductAdminDto> {
-    const res = await this.productService.cloneProduct(id);
-    return mapProductDocumentToProductAdminDto(res);
-  }
-
   @Get('get/:id')
   async getProduct(@Param('id') id: string): Promise<ProductAdminDto> {
     const res = await this.productService.getProduct(id);
@@ -60,11 +29,6 @@ export class ProductController {
       throw new Error(`Product not found with id ${id}`);
     }
     return mapProductDocumentToProductAdminDto(res);
-  }
-
-  @Post('delete/:id')
-  async deleteProduct(@Param('id') id: string): Promise<void> {
-    await this.productService.deleteProduct(id);
   }
 
   @Get('list')

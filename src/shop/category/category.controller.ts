@@ -21,14 +21,6 @@ export class CategoryController {
     return mapCategoriesTreeDocumentToCategoriesTreeDTO(categoriesTree).root;
   }
 
-  @Post('tree')
-  async saveCategoriesTrees(
-    @Body() categoriesNodes: CategoriesNodeDto[],
-  ): Promise<void> {
-    const nodes = categoriesNodes.map(mapCategoriesNodeDTOToCategoryNode);
-    await this.categoryService.saveCategoriesTree(nodes);
-  }
-
   @Get('list')
   async getCategories(): Promise<CategoryDto[]> {
     const categories = await this.categoryService.getCategories();
