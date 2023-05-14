@@ -1,19 +1,25 @@
 import { Module } from '@nestjs/common';
 import { ProductService } from './product/product.service';
 import { ProductController } from './product/product.controller';
-import { Product, ProductSchema } from './schema/product.schema';
+import {
+  Product,
+  ProductSchema,
+} from '../../shop_shared_server/schema/product.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   ItemAttribute,
   ItemAttributeSchema,
-} from './schema/item-attribute.schema';
+} from '../../shop_shared_server/schema/item-attribute.schema';
 import {
   CategoriesTree,
   CategoriesTreeSchema,
-} from './schema/categories-tree.schema';
+} from '../../shop_shared_server/schema/categories-tree.schema';
 import { CategoryService } from './category/category.service';
 import { CategoryController } from './category/category.controller';
-import { Category, CategorySchema } from './schema/category.schema';
+import {
+  Category,
+  CategorySchema,
+} from '../../shop_shared_server/schema/category.schema';
 
 @Module({
   imports: [

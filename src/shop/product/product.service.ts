@@ -1,12 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Product, ProductDocument } from '../schema/product.schema';
+import {
+  Product,
+  ProductDocument,
+} from '../../../shop_shared_server/schema/product.schema';
 import { CreateProductRequestDto } from '../dto/create-product.request.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
   ItemAttribute,
   ItemAttributeDocument,
-} from '../schema/item-attribute.schema';
+} from '../../../shop_shared_server/schema/item-attribute.schema';
 import { mapProductDocumentToProductAdminDto } from '../mapper/map.productDocument-to-productAdminDto';
 import {
   ProductAdminDto,
@@ -14,7 +17,10 @@ import {
 } from '@alster/shop-shared/dto/product.dto';
 import { ProductListResponseDto } from '@alster/shop-shared/dto/product-list.response.dto';
 import { ObjectId } from 'mongodb';
-import { Category, CategoryDocument } from '../schema/category.schema';
+import {
+  Category,
+  CategoryDocument,
+} from '../../../shop_shared_server/schema/category.schema';
 import { LanguageEnum } from '@alster/shop-shared/constants/localization';
 
 @Injectable()

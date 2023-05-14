@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductService } from './product.service';
-import { Product, ProductDocument } from '../schema/product.schema';
+import {
+  Product,
+  ProductDocument,
+} from '../../../shop_shared_server/schema/product.schema';
 import { AppModule } from '../../app.module';
 import { ConsoleLogger } from '@nestjs/common';
 import mongoose, { Model } from 'mongoose';
@@ -8,7 +11,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import {
   ItemAttribute,
   ItemAttributeDocument,
-} from '../schema/item-attribute.schema';
+} from '../../../shop_shared_server/schema/item-attribute.schema';
 import { ObjectId } from 'mongodb';
 import { MockColor, MockSize } from './mocks';
 import { LanguageEnum } from '@alster/shop-shared/constants/localization';
