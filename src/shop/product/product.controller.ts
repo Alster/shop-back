@@ -1,12 +1,12 @@
 import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
 import { ProductService } from '../../../shop_shared_server/service/product/product.service';
 import { mapAttributeDocumentToAttributeDTO } from '../../../shop_shared_server/mapper/map.attributeDocument-to-attributeDTO';
-import { mapProductDocumentToProductAdminDto } from '../../../shop_shared_server/mapper/map.productDocument-to-productAdminDto';
 import { ObjectId } from 'mongodb';
-import { ProductAdminDto } from '../../../shop_shared/dto/product.dto';
+import { ProductDto } from '../../../shop_shared/dto/product.dto';
 import { ProductListResponseDto } from '../../../shop_shared/dto/product-list.response.dto';
 import { LanguageEnum } from '../../../shop_shared/constants/localization';
 import { AttributeDto } from '../../../shop_shared/dto/attribute.dto';
+import { mapProductDocumentToProductDto } from '../../../shop_shared_server/mapper/map.productDocument-to-productDto';
 
 @Controller('product')
 export class ProductController {
@@ -15,12 +15,12 @@ export class ProductController {
   private logger: Logger = new Logger(ProductController.name);
 
   @Get('get/:id')
-  async getProduct(@Param('id') id: string): Promise<ProductAdminDto> {
+  async getProduct(@Param('id') id: string): Promise<ProductDto> {
     const res = await this.productService.getProduct(id);
     if (!res) {
       throw new Error(`Product not found with id ${id}`);
     }
-    return mapProductDocumentToProductAdminDto(res);
+    return mapProductDocumentToProductDto(res, LanguageEnum.UA);
   }
 
   @Get('list')
