@@ -2,7 +2,7 @@ import {
   CategoriesTree,
   CategoriesTreeDocument,
   CategoryNode,
-} from '../../../shop_shared_server/schema/categories-tree.schema';
+} from '../../schema/categories-tree.schema';
 import {
   CategoriesNodeDto,
   CategoriesTreeDto,

@@ -4,22 +4,22 @@ import { ProductController } from './product/product.controller';
 import {
   Product,
   ProductSchema,
-} from '../../shop_shared_server/schema/product.schema';
+} from '../schema/product.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   ItemAttribute,
   ItemAttributeSchema,
-} from '../../shop_shared_server/schema/item-attribute.schema';
+} from '../schema/item-attribute.schema';
 import {
   CategoriesTree,
   CategoriesTreeSchema,
-} from '../../shop_shared_server/schema/categories-tree.schema';
+} from '../schema/categories-tree.schema';
 import { CategoryService } from './category/category.service';
 import { CategoryController } from './category/category.controller';
 import {
   Category,
   CategorySchema,
-} from '../../shop_shared_server/schema/category.schema';
+} from '../schema/category.schema';
 
 @Module({
   imports: [

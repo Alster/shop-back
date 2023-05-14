@@ -1,4 +1,4 @@
-import { ProductDocument } from '../../../shop_shared_server/schema/product.schema';
+import { ProductDocument } from '../../schema/product.schema';
 import { getTranslation } from '../../helpers/translation-helpers';
 import { ProductDto } from '@alster/shop-shared/dto/product.dto';
 

@@ -5,11 +5,11 @@ import {
   CategoriesTree,
   CategoriesTreeDocument,
   CategoryNode,
-} from '../../../shop_shared_server/schema/categories-tree.schema';
+} from '../../schema/categories-tree.schema';
 import {
   Category,
   CategoryDocument,
-} from '../../../shop_shared_server/schema/category.schema';
+} from '../../schema/category.schema';
 
 @Injectable()
 export class CategoryService {
