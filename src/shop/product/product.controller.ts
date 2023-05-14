@@ -1,7 +1,7 @@
 import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
 import { ProductService } from '../../../shop_shared_server/service/product/product.service';
-import { mapAttributeDocumentToAttributeDTO } from '../../../shop_shared/mapper/map.attributeDocument-to-attributeDTO';
-import { mapProductDocumentToProductAdminDto } from '../../../shop_shared/mapper/map.productDocument-to-productAdminDto';
+import { mapAttributeDocumentToAttributeDTO } from '../../../shop_shared_server/mapper/map.attributeDocument-to-attributeDTO';
+import { mapProductDocumentToProductAdminDto } from '../../../shop_shared_server/mapper/map.productDocument-to-productAdminDto';
 import { ObjectId } from 'mongodb';
 import { ProductAdminDto } from '../../../shop_shared/dto/product.dto';
 import { ProductListResponseDto } from '../../../shop_shared/dto/product-list.response.dto';
