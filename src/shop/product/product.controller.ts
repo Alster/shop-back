@@ -1,12 +1,12 @@
 import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
 import { ProductService } from '../../../shop_shared_server/service/product/product.service';
-import { mapAttributeDocumentToAttributeDTO } from '../../../shop_shared_server/mapper/map.attributeDocument-to-attributeDTO';
+import { mapAttributeDocumentToAttributeDTO } from '../../../shop_shared_server/mapper/product/map.attributeDocument-to-attributeDTO';
 import { ObjectId } from 'mongodb';
-import { ProductDto } from '../../../shop_shared/dto/product.dto';
-import { ProductListResponseDto } from '../../../shop_shared/dto/product-list.response.dto';
 import { LanguageEnum } from '../../../shop_shared/constants/localization';
-import { AttributeDto } from '../../../shop_shared/dto/attribute.dto';
-import { mapProductDocumentToProductDto } from '../../../shop_shared_server/mapper/map.productDocument-to-productDto';
+import { mapProductDocumentToProductDto } from '../../../shop_shared_server/mapper/product/map.productDocument-to-productDto';
+import { ProductDto } from 'shop_shared/dto/product/product.dto';
+import { ProductListResponseDto } from '../../../shop_shared/dto/product/product-list.response.dto';
+import { AttributeDto } from '../../../shop_shared/dto/product/attribute.dto';
 
 @Controller('product')
 export class ProductController {

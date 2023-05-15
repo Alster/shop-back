@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { ShopModule } from './shop/shop.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Config } from './config/config';
-import { validateAndThrow } from '../shop_shared_server/helpers/validateAndThrow';
+import { validateAndThrow } from '../shop_shared_server/helpers/validate-and-throw';
 import mongoose from 'mongoose';
 
 @Module({
