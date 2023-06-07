@@ -1,4 +1,4 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get, Logger, Query } from '@nestjs/common';
 import { CategoryService } from '../../../shop_shared_server/service/category/category.service';
 import { mapCategoriesTreeDocumentToCategoriesTreeDTO } from '../../../shop_shared_server/mapper/category/map.categoriesTreeDocument-to-categoriesTreeDTO';
 import { mapCategoryToCategoryDto } from '../../../shop_shared_server/mapper/category/map.category-to-categoryDTO';
@@ -19,10 +19,12 @@ export class CategoryController {
   }
 
   @Get('list')
-  async getCategories(): Promise<CategoryDto[]> {
+  async getCategories(
+    @Query('lang') lang: LanguageEnum,
+  ): Promise<CategoryDto[]> {
     const categories = await this.categoryService.getCategories();
     return categories.map((category) =>
-      mapCategoryToCategoryDto(category, LanguageEnum.UA),
+      mapCategoryToCategoryDto(category, lang),
     );
   }
 }
