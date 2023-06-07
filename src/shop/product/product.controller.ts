@@ -5,8 +5,9 @@ import { ObjectId } from 'mongodb';
 import { LanguageEnum } from '../../../shop_shared/constants/localization';
 import { mapProductDocumentToProductDto } from '../../../shop_shared_server/mapper/product/map.productDocument-to-productDto';
 import { ProductDto } from 'shop_shared/dto/product/product.dto';
-import { ProductListResponseDto } from '../../../shop_shared/dto/product/product-list.response.dto';
 import { AttributeDto } from '../../../shop_shared/dto/product/attribute.dto';
+import { ProductListAdminResponseDto } from '../../../shop_shared/dto/product/product-list.admin.response.dto';
+import { mapProductDocumentToProductAdminDto } from '../../../shop_shared_server/mapper/product/map.productDocument-to-productAdminDto';
 
 @Controller('product')
 export class ProductController {
@@ -32,7 +33,7 @@ export class ProductController {
     @Query('skip') skip: number,
     @Query('limit') limit: number,
     @Query('search') search: string,
-  ): Promise<ProductListResponseDto> {
+  ): Promise<ProductListAdminResponseDto> {
     console.log('Attrs:', attrs);
     const query: any = {};
     if (attrs) {
@@ -58,13 +59,22 @@ export class ProductController {
       }
     }
 
-    return await this.productService.find(
+    const res = await this.productService.find(
       query,
       sort,
       skip,
       limit,
       LanguageEnum.UA,
     );
+
+    return {
+      products: res.products.map((product) =>
+        mapProductDocumentToProductAdminDto(product),
+      ),
+      total: res.total,
+      filters: res.filters,
+      categories: res.categories,
+    };
   }
 
   @Get('attribute/list')
